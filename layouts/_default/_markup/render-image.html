@@ -1,0 +1,7 @@
+{{/* Lazy loading for all images; intrinsic size only resolves for bundle resources */}}
+{{- $img := .Page.Resources.Get (strings.TrimPrefix "./" .Destination) -}}
+{{- if $img -}}
+<img src="{{ $img.RelPermalink }}" alt="{{ .PlainText }}" width="{{ $img.Width }}" height="{{ $img.Height }}" loading="lazy" decoding="async">
+{{- else -}}
+<img src="{{ .Destination | safeURL }}" alt="{{ .PlainText }}" loading="lazy" decoding="async">
+{{- end -}}

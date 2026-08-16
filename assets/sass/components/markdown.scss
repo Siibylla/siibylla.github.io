@@ -1,0 +1,157 @@
+/* Markdown content styles and the custom pastel Chroma theme.
+   Customized from Rouge's generated base16.solarized theme (MIT); variables drive the dark mode swap. */
+
+/* Light mode palette (default) */
+:root {
+  --blockquote-border: #9d8f8d;
+  --blockquote-bg: #f3f3f1;
+
+  --table-th-border: #d3d3d6;
+  --table-th-bg: #ececea;
+  --table-td-border: #dddddf;
+  --table-td-bg: #f8f8f6;
+
+  --inline-code-bg: #eef1ee;
+
+  --code-text: #5f666b;
+  --code-border: #dddddf;
+  --code-bg: #f8f8f6;
+
+  --token-comment: #8d8d90;
+  --token-keyword: #6f93bd;
+  --token-type: #b09a63;
+  --token-literal: #6f8b5b;
+  --token-punct: #98a0a6;
+  --token-del: #a78480;
+  --token-error: #2c2c2c;
+}
+
+/* Dark mode palette swap */
+[data-theme="dark"] {
+  --blockquote-border: #8f8180;
+  --blockquote-bg: #1b1d20;
+
+  --table-th-border: #2f3236;
+  --table-th-bg: #202327;
+  --table-td-border: #2a2d31;
+  --table-td-bg: #181a1d;
+
+  --inline-code-bg: #202327;
+
+  --code-text: #e2e2de;
+  --code-border: #2a2d31;
+  --code-bg: #181a1d;
+
+  --token-comment: #9fa1a6;
+  --token-keyword: #8aaedf;
+  --token-type: #c2ab73;
+  --token-literal: #8fa57a;
+  --token-punct: #a4abb2;
+  --token-del: #c18f8b;
+  --token-error: #1b1d20;
+}
+
+blockquote {
+  width: fit-content;
+  max-width: 100%;
+  margin: 0.4rem 0;
+  padding: 0.2rem 0.4rem;
+  border-left: 0.23rem solid var(--blockquote-border);
+  background-color: var(--blockquote-bg);
+
+  p {
+    margin: 0;
+  }
+}
+
+table {
+  max-width: max-content;
+  margin: 0;
+  border-collapse: collapse;
+
+  th {
+    padding: 0.4rem;
+    border: 1px solid var(--table-th-border);
+    background-color: var(--table-th-bg);
+  }
+
+  td {
+    padding: 0.4rem;
+    border: 1px solid var(--table-td-border);
+    background-color: var(--table-td-bg);
+  }
+}
+
+:not(pre) > code {
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.2rem;
+  font-family: inherit;
+  font-size: 0.94em; /* Relative so code scales with headings too */
+  font-weight: 500;
+  background-color: var(--inline-code-bg);
+}
+
+/* Light mode inherits the surrounding text color on purpose */
+[data-theme="dark"] :not(pre) > code {
+  color: var(--code-text);
+}
+
+abbr[title] {
+  text-decoration: underline dotted;
+  text-underline-offset: 0.2em;
+  cursor: help;
+}
+
+/* Chroma's outer wrapper div */
+.highlight {
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* Styled on pre so language-less code blocks get the same frame */
+pre {
+  width: max-content;
+  max-width: 100%;
+  margin: 0;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--code-border);
+  border-radius: 0.2rem;
+  font-size: 0.94rem;
+  line-height: 1.4;
+  color: var(--code-text);
+  background-color: var(--code-bg);
+  overflow-x: auto;
+}
+
+/* Token colors; the base text color cascades from pre */
+.chroma {
+  /* Comments */
+  .c, .ch, .cm, .cp, .cpf, .cs { color: var(--token-comment); }
+
+  /* Keywords, attributes, function names */
+  .k, .kn, .kp, .kr, .na, .nf, .fm { color: var(--token-keyword); }
+
+  /* Types, declarations, tags, namespaces, builtins, constants, decorators */
+  .kc, .kd, .kt, .nt, .nn, .nc, .no, .nd, .ni, .nb, .bp { color: var(--token-type); }
+
+  /* Strings, numbers, literals */
+  .s, .sa, .sb, .sc, .dl, .sd, .se, .sh, .si, .sx, .sr, .ss,
+  .m, .mb, .mf, .mh, .mi, .il, .mo, .l, .ld { color: var(--token-literal); }
+
+  /* Operators, punctuation */
+  .o, .ow, .or, .p { color: var(--token-punct); }
+
+  /* Generic: diff, emphasis, headings */
+  .gi { color: var(--token-literal); }
+  .gd { color: var(--token-del); }
+  .ge { font-style: italic; }
+  .gs { font-weight: 600; }
+  .gh { color: var(--token-keyword); font-weight: 600; }
+
+  /* Errors (the background stays the same in both themes) */
+  .err {
+    color: var(--token-error);
+    background-color: #c18f8b;
+  }
+}

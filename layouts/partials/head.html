@@ -1,0 +1,72 @@
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+
+  <!-- Browser chrome color; scripts keep it in sync with the active theme -->
+  <meta name="theme-color" content="#f7f7f5">
+
+  <link rel="canonical" href="{{ .Permalink }}">
+
+  <!-- Autodiscovery link; always points to the site-wide feed -->
+  {{ with .Site.Home.OutputFormats.Get "RSS" }}
+  <link rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }}" href="{{ .Permalink }}">
+  {{ end }}
+
+  {{ $metaDesc := .Params.desc | default .Site.Params.description }}
+  {{ $metaDesc = $metaDesc | plainify | chomp | truncate 150 }}
+  <meta name="description" content="{{ $metaDesc }}">
+
+  <meta name="referrer" content="no-referrer">
+
+  <!-- unsafe-inline is required by the theme init script and markdown inline styles -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline';
+    connect-src 'self';
+    style-src 'self' https://fonts.googleapis.com 'unsafe-inline';
+    font-src 'self' https://fonts.gstatic.com;
+    img-src 'self';
+    object-src 'none';
+    base-uri 'self';
+    form-action 'self';
+  ">
+
+  <title>
+    {{- if or .IsHome (not .Title) }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end -}}
+  </title>
+
+  {{ $ogType := cond (in .Site.Params.archiveSections .Section) "article" (.Site.Params.ogType | default "website") }}
+  <meta property="og:url" content="{{ .Permalink }}">
+  <meta property="og:type" content="{{ $ogType }}">
+  <meta property="og:title" content="{{ .Title | default .Site.Title }}">
+  <meta property="og:site_name" content="{{ .Site.Title }}">
+  <meta property="og:description" content="{{ $metaDesc }}">
+  <meta property="og:locale" content="{{ .Site.Params.ogLocale }}">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Load the font async; the preload swaps itself to a stylesheet on load -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&display=swap" onload="this.onload=null; this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&display=swap"></noscript>
+
+  <!-- Fingerprint handles cache busting; SRI omitted since the CSS is same-origin -->
+  {{ $opts := dict "transpiler" "dartsass" }}
+  {{ $style := resources.Get "sass/main.scss" | css.Sass $opts | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $style.RelPermalink }}">
+
+  <!-- Apply the saved theme before first paint to avoid a flash -->
+  <script>
+    (function () {
+      try {
+        const theme = localStorage.getItem("theme");
+        if (theme === "dark") {
+          document.documentElement.setAttribute("data-theme", "dark");
+          document.querySelector("meta[name=theme-color]").setAttribute("content", "#16181a");
+        }
+      } catch (err) { }
+    })();
+  </script>
+
+</head>

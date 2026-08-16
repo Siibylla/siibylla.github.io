@@ -1,0 +1,15 @@
+<header class="layout-container header" aria-label="Site header">
+  <div class="header__item">
+    <h1 class="header__brand"><a href="{{ `/` | relURL }}">{{ .Site.Title }}</a></h1>
+
+    <div class="header__actions">
+      <a class="header__link" href="https://github.com/Siibylla" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in new tab)">GitHub</a>
+      <button type="button" class="color-mode-btn" aria-label="Toggle color mode"></button>
+    </div>
+  </div>
+
+  <div class="header__line" aria-hidden="true"></div>
+</header>
+
+{{ $colorModeJS := resources.Get "js/color-mode-btn.js" | minify | fingerprint }}
+<script src="{{ $colorModeJS.RelPermalink }}" defer></script>

@@ -1,0 +1,6 @@
+/* Loaded last so these intentionally win the cascade */
+:focus-visible {
+  outline: 0.125rem solid var(--color-link);
+  outline-offset: 0.19rem;
+  border-radius: 0.18rem;
+}

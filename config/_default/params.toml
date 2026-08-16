@@ -1,0 +1,8 @@
+# The filename maps this file's contents under [params]
+description = "생각날 때 올리는 개인 블로그"
+
+# Sections treated as blog posts (listing, og:type, post chrome)
+archiveSections = ["dev", "homelab", "review"]
+
+ogType = "website"
+ogLocale = "ko_KR"

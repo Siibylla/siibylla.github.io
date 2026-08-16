@@ -1,0 +1,26 @@
+.text-link {
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &__meta {
+    color: var(--color-text);
+    font-size: 0.92rem;
+    opacity: 0.8;
+  }
+}
+
+.post-list {
+  &__item + &__item {
+    margin-top: 0.2rem;
+    margin-bottom: 0.4rem;
+  }
+}
+
+.unstyled-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

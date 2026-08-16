@@ -1,0 +1,54 @@
+{{ define "main" }}
+
+<div class="article__item">
+  <a class="article__back-link" href="{{ `/` | relURL }}" aria-label="Go back" onclick="if (history.length > 1) { history.back(); return false; }"><span aria-hidden="true">←</span></a>
+  <h2 class="article__title">{{ .Title }}</h2>
+</div>
+
+{{ if eq (len .RegularPages) 0 }}<p>There are no posts.</p>{{ else }}
+<section>
+  <h3>Recent</h3>
+
+  <ul class="unstyled-list">
+    {{ range first 5 .RegularPages }}
+    <li class="post-list__item">
+      <a class="text-link" href="{{ .RelPermalink }}">
+        <span>{{ .Title }}</span>
+        <time class="text-link__meta" datetime="{{ .Date.Format `2006-01-02T15:04:05Z07:00` }}"> · {{ .Date.Format "2006-01-02" }}</time>
+      </a>
+    </li>
+    {{ end }}
+  </ul>
+</section>
+
+{{/* Archive grouped by year */}}
+<section class="archive">
+  <h3>Archive</h3>
+
+  <ul class="archive__list unstyled-list">
+    {{ range .RegularPages.GroupByDate "2006" }}
+    <li class="archive__item">
+      <details class="archive__details">
+        <summary class="archive__summary">
+          <span class="archive__year">{{ .Key }}</span>
+          <span class="text-link__meta">({{ len .Pages }})</span>
+        </summary>
+
+        <ul class="archive__list unstyled-list">
+          {{ range .Pages }}
+          <li class="archive__item">
+            <a class="text-link" href="{{ .RelPermalink }}">
+              <span>{{ .Title }}</span>
+              <time class="text-link__meta" datetime="{{ .Date.Format `2006-01-02T15:04:05Z07:00` }}"> · {{ .Date.Format "01-02" }}</time>
+            </a>
+          </li>
+          {{ end }}
+        </ul>
+      </details>
+    </li>
+    {{ end }}
+  </ul>
+</section>
+{{ end }}
+
+{{ end }}

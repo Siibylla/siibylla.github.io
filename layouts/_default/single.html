@@ -1,0 +1,23 @@
+{{ define "main" }}
+
+{{ $isPost := in .Site.Params.archiveSections .Section }}
+
+{{ if $isPost }}
+<div class="article__item">
+  <a class="article__back-link" href="{{ `/` | relURL }}" aria-label="Go back" onclick="if (history.length > 1) { history.back(); return false; }"><span aria-hidden="true">←</span></a>
+  <h2 class="article__title">{{ .Title }}</h2>
+  <time class="article__date" datetime="{{ .Date.Format `2006-01-02T15:04:05Z07:00` }}">{{ .Date.Format "2006-01-02" }}</time>
+</div>
+{{ end }}
+
+<section class="article__content">
+  {{ .Content }}
+</section>
+
+{{ if $isPost }}
+<button class="to-top" type="button" aria-label="Back to top" tabindex="-1">↑</button>
+{{ $toTopJS := resources.Get "js/to-top.js" | minify | fingerprint }}
+<script src="{{ $toTopJS.RelPermalink }}" defer></script>
+{{ end }}
+
+{{ end }}

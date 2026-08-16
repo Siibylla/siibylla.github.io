@@ -1,0 +1,7 @@
+# The filename maps this file's contents under [markup]
+[goldmark.renderer]
+  unsafe = true # Allow raw HTML in markdown content
+
+# Emit token classes so the custom theme in components/markdown.scss applies
+[highlight]
+  noClasses = false

@@ -1,0 +1,11 @@
+baseURL = "https://siibylla.com/"
+title = "Siibylla"
+defaultContentLanguage = "ko"
+locale = "ko"
+timeZone = "Asia/Seoul"
+
+enableRobotsTXT = true
+disableKinds = ["taxonomy", "term"]
+
+# Hide the generator meta tag and the Hugo version it exposes
+disableHugoGeneratorInject = true

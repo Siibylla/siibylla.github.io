@@ -1,0 +1,39 @@
+.footer {
+  /* Drawn as a gradient so the line stays inset from both edges */
+  &__line {
+    height: 0.13rem;
+    background: linear-gradient(var(--footer-line), var(--footer-line)) center / calc(100% - 1.6rem) 0.12rem no-repeat;
+    opacity: 0.8;
+  }
+
+  &__item {
+    display: flex;
+    justify-content: center;
+    padding: 0.8rem;
+    color: var(--footer-text);
+    font-size: 0.84rem;
+    font-weight: 400;
+    text-align: center;
+
+    ul {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.6rem;
+
+      @media (max-width: 540px) {
+        flex-direction: column;
+        gap: 0.4rem;
+      }
+    }
+  }
+
+  &__link {
+    color: var(--footer-text);
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}

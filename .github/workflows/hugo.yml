@@ -1,0 +1,59 @@
+# Builds on every push and pull request; deploys only on a push to main
+name: hugo build and deploy
+
+permissions:
+  contents: write # Needed to push the built site to the publish branch
+
+on:
+  push:
+    branches: [ main ]
+
+  pull_request:
+    branches: [ main ]
+
+env:
+  HUGO_VERSION: 0.164.0
+  DART_SASS_VERSION: 1.102.0
+  HUGO_ENVIRONMENT: production
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false # The deploy step authenticates on its own
+
+      # Standard edition is enough: WebP went all-edition in v0.153.0 and Dart Sass is an external binary
+      - name: Install Hugo and Dart Sass
+        run: |
+          set -eo pipefail # Without pipefail a failed curl is masked by tar's exit status
+          mkdir -p "${HOME}/.local/bin"
+          curl -sfL "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_linux-amd64.tar.gz" | tar -xz -C "${HOME}/.local/bin" hugo
+          curl -sfL "https://github.com/sass/dart-sass/releases/download/${DART_SASS_VERSION}/dart-sass-${DART_SASS_VERSION}-linux-x64.tar.gz" | tar -xz -C "${HOME}/.local"
+          echo "${HOME}/.local/bin" >> "${GITHUB_PATH}"
+          echo "${HOME}/.local/dart-sass" >> "${GITHUB_PATH}"
+
+          # Absolute paths: GITHUB_PATH only takes effect in later steps
+          echo "Hugo      : $("${HOME}/.local/bin/hugo" version)"
+          echo "Dart Sass : $("${HOME}/.local/dart-sass/sass" --version)"
+
+      - name: Build Hugo site
+        run: hugo --gc --minify # baseURL comes from config/_default/hugo.toml
+
+      # A fresh git init inside public/ leaves the branch at exactly one commit, so no history piles up
+      - name: Deploy to GitHub Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          touch public/.nojekyll
+          cd public
+          git init -b github-pages
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git add -A
+          git commit -m "deploy ${GITHUB_SHA}"
+          git push --force "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" github-pages

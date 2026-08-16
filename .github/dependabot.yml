@@ -1,0 +1,15 @@
+# This site has no package manifest, so the only dependencies to track
+# are the GitHub Actions pinned in .github/workflows
+version: 2
+
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/" # Dependabot scans .github/workflows from the repo root
+    schedule:
+      interval: "weekly"
+
+    labels:
+      - "dependencies"
+
+    # Avoid PR pile-up
+    open-pull-requests-limit: 3

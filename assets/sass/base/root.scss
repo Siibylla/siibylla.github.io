@@ -1,0 +1,28 @@
+@charset "utf-8";
+
+:root {
+  color-scheme: light;
+
+  --color-bg: #f7f7f5;
+  --color-text: #2c2c2c;
+  --color-link: #6f93bd;
+
+  --header-line: #8d8d90;
+  --footer-line: #c9c9cc;
+  --footer-text: #aaaab0;
+
+  --mode-btn-light: #efefec;
+  --mode-btn-dark: #1a1c1f;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-bg: #16181a;
+  --color-text: #e2e2de;
+  --color-link: #8aaedf;
+
+  --header-line: #2f3236;
+  --footer-line: #272a2e;
+  --footer-text: #9fa1a6;
+}
