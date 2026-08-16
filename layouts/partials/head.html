@@ -56,12 +56,14 @@
   {{ $style := resources.Get "sass/main.scss" | css.Sass $opts | minify | fingerprint }}
   <link rel="stylesheet" href="{{ $style.RelPermalink }}">
 
-  <!-- Apply the saved theme before first paint to avoid a flash -->
+  <!-- Resolve the theme before first paint to avoid a flash; mirrors color-mode-btn.js -->
   <script>
     (function () {
       try {
-        const theme = localStorage.getItem("theme");
-        if (theme === "dark") {
+        const stored = localStorage.getItem("theme");
+        const dark = stored === "dark"
+          || (stored !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+        if (dark) {
           document.documentElement.setAttribute("data-theme", "dark");
           document.querySelector("meta[name=theme-color]").setAttribute("content", "#16181a");
         }
