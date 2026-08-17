@@ -6,6 +6,10 @@
   <!-- Browser chrome color; scripts keep it in sync with the active theme -->
   <meta name="theme-color" content="#f4f4f2">
 
+  <!-- The SVG carries its own prefers-color-scheme swap; the PNG is the fallback for Safari -->
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+
   <link rel="canonical" href="{{ .Permalink }}">
 
   <!-- Autodiscovery link; always points to the site-wide feed -->
