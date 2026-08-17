@@ -3,52 +3,54 @@
 
 /* Light mode palette (default) */
 :root {
-  --blockquote-border: #9d8f8d;
-  --blockquote-bg: #f3f3f1;
+  --blockquote-border: #9a908d;
+  --blockquote-bg: #efeeec;
 
-  --table-th-border: #d3d3d6;
-  --table-th-bg: #ececea;
-  --table-td-border: #dddddf;
-  --table-td-bg: #f8f8f6;
+  --table-th-border: #d9d6d3;
+  --table-th-bg: #eae8e5;
+  --table-td-border: #e2dfdc;
+  --table-td-bg: #f8f7f6;
 
-  --inline-code-bg: #eef1ee;
+  --inline-code-bg: #eceae7;
 
-  --code-text: #5f666b;
-  --code-border: #dddddf;
-  --code-bg: #f8f8f6;
+  --code-text: #494340;
+  --code-border: #e2dfdc;
+  --code-bg: #f8f7f6;
 
-  --token-comment: #8d8d90;
-  --token-keyword: #6f93bd;
-  --token-type: #b09a63;
-  --token-literal: #6f8b5b;
-  --token-punct: #98a0a6;
-  --token-del: #a78480;
-  --token-error: #2c2c2c;
+  --token-comment: #6e6764;
+  --token-keyword: #3a5c3f;
+  --token-type: #7d6440;
+  --token-literal: #6a5a8a;
+  --token-punct: #726b68;
+  --token-del: #8d5b57;
+  --token-error: #2b2726;
+  --token-err-bg: #bc8d89;
 }
 
-/* Dark mode palette swap */
+/* Dark mode palette */
 [data-theme="dark"] {
-  --blockquote-border: #8f8180;
-  --blockquote-bg: #1b1d20;
+  --blockquote-border: #8b8280;
+  --blockquote-bg: #292625;
 
-  --table-th-border: #2f3236;
-  --table-th-bg: #202327;
-  --table-td-border: #2a2d31;
-  --table-td-bg: #181a1d;
+  --table-th-border: #3c3735;
+  --table-th-bg: #2c2928;
+  --table-td-border: #353130;
+  --table-td-bg: #262322;
 
-  --inline-code-bg: #202327;
+  --inline-code-bg: #2c2928;
 
-  --code-text: #e2e2de;
-  --code-border: #2a2d31;
-  --code-bg: #181a1d;
+  --code-text: #e8e3de;
+  --code-border: #353130;
+  --code-bg: #262322;
 
-  --token-comment: #9fa1a6;
-  --token-keyword: #8aaedf;
-  --token-type: #c2ab73;
-  --token-literal: #8fa57a;
-  --token-punct: #a4abb2;
-  --token-del: #c18f8b;
-  --token-error: #1b1d20;
+  --token-comment: #a8a19d;
+  --token-keyword: #8fb094;
+  --token-type: #cbb384;
+  --token-literal: #b0a2cc;
+  --token-punct: #b0a9a5;
+  --token-del: #cb9d98;
+  --token-error: #1a1614;
+  --token-err-bg: #a8736f;
 }
 
 blockquote {
@@ -149,9 +151,9 @@ pre {
   .gs { font-weight: 600; }
   .gh { color: var(--token-keyword); font-weight: 600; }
 
-  /* Errors (the background stays the same in both themes) */
+  /* Errors */
   .err {
     color: var(--token-error);
-    background-color: #c18f8b;
+    background-color: var(--token-err-bg);
   }
 }

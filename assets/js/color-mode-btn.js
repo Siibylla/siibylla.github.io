@@ -11,7 +11,7 @@ const colorModeButton = document.querySelector(".color-mode-btn");
 
 // Keep the browser chrome color in sync; values match --color-bg in root.scss
 const themeColorMeta = document.querySelector("meta[name=theme-color]");
-const THEME_COLORS = { dark: "#16181a", light: "#f7f7f5" };
+const THEME_COLORS = { dark: "#222020", light: "#f4f4f2" };
 
 if (colorModeButton) {
   const darkMedia = window.matchMedia(DARK_QUERY);

@@ -3,26 +3,29 @@
 :root {
   color-scheme: light;
 
-  --color-bg: #f7f7f5;
-  --color-text: #2c2c2c;
-  --color-link: #6f93bd;
+  --color-bg: #f4f4f2;
+  --color-text: #494340;
+  --color-link: #3a5c3f;
 
-  --header-line: #8d8d90;
-  --footer-line: #c9c9cc;
-  --footer-text: #aaaab0;
+  --header-line: #857b78;
+  --footer-line: #9a908d;
+  --footer-text: #6f6763;
 
-  --mode-btn-light: #efefec;
-  --mode-btn-dark: #1a1c1f;
+  --mode-btn-light: #e8e6e2;
+  --mode-btn-dark: #4a4441;
 }
 
 [data-theme="dark"] {
   color-scheme: dark;
 
-  --color-bg: #16181a;
-  --color-text: #e2e2de;
-  --color-link: #8aaedf;
+  --color-bg: #222020;
+  --color-text: #e8e3de;
+  --color-link: #8fb094;
 
-  --header-line: #2f3236;
-  --footer-line: #272a2e;
-  --footer-text: #9fa1a6;
+  --header-line: #807774;
+  --footer-line: #605956;
+  --footer-text: #aea4a0;
+
+  --mode-btn-light: #cfc9c4;
+  --mode-btn-dark: #35302e;
 }
