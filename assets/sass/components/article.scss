@@ -74,13 +74,6 @@
   font-weight: 600;
   background: none;
   transition: opacity 0.2s ease;
-
-  /* Hover only on precise pointer devices */
-  @media (hover: hover) and (pointer: fine) {
-    &:hover {
-      opacity: 1;
-    }
-  }
 }
 
 .to-top {
@@ -95,6 +88,16 @@
     display: block;
     opacity: 0.8;
     pointer-events: auto;
+  }
+}
+
+/* Hover only on precise pointer devices */
+@media (hover: hover) and (pointer: fine) {
+  .article__back-link,
+  .to-top.show {
+    &:hover {
+      opacity: 1;
+    }
   }
 }
 
