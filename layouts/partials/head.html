@@ -6,9 +6,12 @@
   <!-- Browser chrome color; scripts keep it in sync with the active theme -->
   <meta name="theme-color" content="#f2f2f1">
 
-  <!-- One flat --color-link purple in both themes; the PNG is the fallback for Safari -->
+  <!-- One flat --color-link purple in both themes. The SVG is preferred; the PNG covers
+       browsers without SVG icon support, and the ICO is what Safari reads for bookmarks. -->
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
   <link rel="canonical" href="{{ .Permalink }}">
 
