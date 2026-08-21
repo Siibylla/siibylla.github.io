@@ -26,8 +26,8 @@
   <!-- unsafe-inline is required by the theme init script and markdown inline styles -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
-    script-src 'self' 'unsafe-inline';
-    connect-src 'self';
+    script-src 'self' 'unsafe-inline' https://umami.siibylla.com;
+    connect-src 'self' https://umami.siibylla.com;
     style-src 'self' https://fonts.googleapis.com 'unsafe-inline';
     font-src 'self' https://fonts.gstatic.com;
     img-src 'self';
@@ -74,5 +74,8 @@
       } catch (err) { }
     })();
   </script>
-
+  
+  {{ if eq hugo.Environment "production" }}
+  <script defer src="https://umami.siibylla/script.js" data-website-id="524f19ea-d291-47ee-8d56-e60fc3b0c5bd"></script>
+  {{ end }}
 </head>
