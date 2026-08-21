@@ -1,0 +1,5 @@
+Contact: https://github.com/Siibylla/siibylla.github.io/issues
+Expires: 2027-05-03T00:00:00Z
+Preferred-Languages: ko, en
+Canonical: https://siibylla.com/.well-known/security.txt
+Policy: https://github.com/Siibylla/siibylla.github.io/security/policy

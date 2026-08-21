@@ -1,0 +1,89 @@
+<!doctype html><html lang=ko><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=color-scheme content="light dark"><meta name=theme-color content="#f4f3f0"><link rel=icon type=image/svg+xml href=/favicon/favicon.139d1840ff18bc0368edae09cde85a00ca8aa4d5c490a48cb361043fbc2fcacd.svg><link rel=canonical href=https://siibylla.com/homelab/2026-07-07-pi-umami/><link rel=alternate type=application/rss+xml title=Siibylla href=https://siibylla.com/index.xml><meta name=description content="라즈베리 파이에서 우마미 자체 호스팅하기"><meta name=referrer content="no-referrer"><meta http-equiv=Content-Security-Policy content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' https://umami.siibylla.com;
+    connect-src 'self' https://umami.siibylla.com;
+    style-src 'self' https://fonts.googleapis.com 'unsafe-inline';
+    font-src 'self' https://fonts.gstatic.com;
+    img-src 'self';
+    object-src 'none';
+    base-uri 'self';
+    form-action 'self';
+  "><title>라즈베리파이5(3) - 우마미 호스팅하기 | Siibylla</title><meta property="og:url" content="https://siibylla.com/homelab/2026-07-07-pi-umami/"><meta property="og:type" content="article"><meta property="og:title" content="라즈베리파이5(3) - 우마미 호스팅하기"><meta property="og:site_name" content="Siibylla"><meta property="og:description" content="라즈베리 파이에서 우마미 자체 호스팅하기"><meta property="og:locale" content="ko_KR"><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link rel=preload as=style href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&display=swap" onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&display=swap"></noscript><link rel=stylesheet href=/sass/main.min.80e23a1b3b2a28effb2c5a08c18ef7b7f96639e545566673c7064cdd29bba262.css><script>(function(){try{const e=localStorage.getItem("theme"),t=e==="dark"||e!=="light"&&window.matchMedia("(prefers-color-scheme: dark)").matches;t&&(document.documentElement.setAttribute("data-theme","dark"),document.querySelector("meta[name=theme-color]").setAttribute("content","#1f1f1c"))}catch{}})()</script><script defer src=https://umami.siibylla.com/script.js data-website-id=524f19ea-d291-47ee-8d56-e60fc3b0c5bd></script></head><body><header class="layout-container header" aria-label="Site header"><div class=header__item><h1 class=header__brand><a href=/>Siibylla</a></h1><div class=header__actions><a class=header__link href=https://github.com/Siibylla target=_blank rel="noopener noreferrer" aria-label="GitHub (opens in new tab)">GitHub</a>
+<button type=button class=color-mode-btn aria-label="Toggle color mode"></button></div></div><div class=header__line aria-hidden=true></div></header><script src=/js/color-mode-btn.min.f7c31c8b6345f8787c6362b601b63c480c87e0dea8956141520c3eb72647777f.js defer></script><main class="layout-container article" aria-label="Main content"><div class=article__item><a class=article__back-link href=/ aria-label="Go back" onclick="if(history.length>1)return history.back(),!1"><span aria-hidden=true>←</span></a><h2 class=article__title>라즈베리파이5(3) - 우마미 호스팅하기</h2><time class=article__date datetime=2026-07-07T00:00:00+09:00>2026-07-07</time></div><section class=article__content><h3 id=ssh-키-생성>SSH 키 생성</h3><p>터미널에서 매번 비밀번호 입력해서 접속하긴 귀찮으니 맥북에서 ssh키를 생성해서 ssh 명령어만 입력하면 바로 로그인되게끔 설정했습니다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>ssh-keygen -t ed25519 -C <span class=s2>&#34;raspberrypi&#34;</span>
+</span></span><span class=line><span class=cl>ssh-copy-id 사용자명@라즈베리파이IP
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 접속 후 파이 업데이트</span>
+</span></span><span class=line><span class=cl>sudo apt update <span class=o>&amp;&amp;</span> sudo apt upgrade -y
+</span></span></code></pre></div><br><hr><h3 id=도커-설치>도커 설치</h3><p>우마미를 도커 compose로 설정하고, 헤르메스 터미널도 도커로 돌릴꺼라서 도커부터 설치해주었습니다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># Docker 설치 스크립트 다운로드 및 실행</span>
+</span></span><span class=line><span class=cl>curl -sSL https://get.docker.com <span class=p>|</span> sh
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 현재 사용자를 docker 그룹에 추가</span>
+</span></span><span class=line><span class=cl>sudo usermod -aG docker <span class=nv>$USER</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># SSH 세션 종료 후 재접속</span>
+</span></span><span class=line><span class=cl><span class=nb>exit</span>
+</span></span><span class=line><span class=cl>ssh 사용자명@라즈베리파이IP
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 그룹에 추가되었는지 확인</span>
+</span></span><span class=line><span class=cl>groups
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 도커 테스트</span>
+</span></span><span class=line><span class=cl>docker --version
+</span></span><span class=line><span class=cl>docker run hello-world
+</span></span></code></pre></div><p>마지막으로 <code>Hello from Docker!</code>가 출력되고 기본 세팅은 완료되었습니다.</p><hr><h3 id=우마미-세팅-실행>우마미 세팅, 실행</h3><p>우마미는 클라우드플레어 터널로 설정하여 해당 서비스 기준으로 설명합니다.<br>클라우드플레어, 우마미 사용법은 다루지 않아서 자세하게 다루는 문서를 참고하는걸 추천드립니다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 작업 폴더 생성, 이동</span>
+</span></span><span class=line><span class=cl>mkdir -p ~/umami <span class=o>&amp;&amp;</span> <span class=nb>cd</span> ~/umami
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 앱시크릿 랜덤 생성 명령어(.env사용)</span>
+</span></span><span class=line><span class=cl>openssl rand -base64 <span class=m>32</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># env생성 및 설정</span>
+</span></span><span class=line><span class=cl>nano .env
+</span></span><span class=line><span class=cl><span class=c1># 아래 내용 입력</span>
+</span></span><span class=line><span class=cl><span class=nv>APP_SECRET</span><span class=o>=</span>랜덤한_긴_문자열
+</span></span><span class=line><span class=cl><span class=nv>POSTGRES_PASSWORD</span><span class=o>=</span>랜덤한_비밀번호
+</span></span><span class=line><span class=cl><span class=c1># 지금 시점에선 비워둠, 어드민 삭제 후 입력</span>
+</span></span><span class=line><span class=cl><span class=nv>CLOUDFLARE_TUNNEL_TOKEN</span><span class=o>=</span>클라우드플레어_터널_토큰값
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># docker-compose.yml 작성</span>
+</span></span><span class=line><span class=cl>nano docker-compose.yml
+</span></span><span class=line><span class=cl><span class=c1># 아래 내용 입력</span>
+</span></span><span class=line><span class=cl>services:
+</span></span><span class=line><span class=cl>  umami:
+</span></span><span class=line><span class=cl>    image: umamisoftware/umami:3.1.0 <span class=c1># 버전 고정용</span>
+</span></span><span class=line><span class=cl>    ports:
+</span></span><span class=line><span class=cl>      - <span class=s2>&#34;127.0.0.1:3000:3000&#34;</span> <span class=c1># 로컬 호스트만 열게끔</span>
+</span></span><span class=line><span class=cl>    env_file:
+</span></span><span class=line><span class=cl>      - .env
+</span></span><span class=line><span class=cl>    depends_on:
+</span></span><span class=line><span class=cl>      - db
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  db:
+</span></span><span class=line><span class=cl>    image: postgres:15-alpine
+</span></span><span class=line><span class=cl>    environment:
+</span></span><span class=line><span class=cl>      POSTGRES_DB: umami
+</span></span><span class=line><span class=cl>      POSTGRES_USER: umami
+</span></span><span class=line><span class=cl>      POSTGRES_PASSWORD: <span class=si>${</span><span class=nv>POSTGRES_PASSWORD</span><span class=si>}</span>
+</span></span><span class=line><span class=cl>    volumes:
+</span></span><span class=line><span class=cl>      - umami-db-data:/var/lib/postgresql/data
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  cloudflared:
+</span></span><span class=line><span class=cl>    image: cloudflare/cloudflared:latest
+</span></span><span class=line><span class=cl>    command: tunnel run
+</span></span><span class=line><span class=cl>    env_file:
+</span></span><span class=line><span class=cl>      - .env
+</span></span><span class=line><span class=cl>    environment:
+</span></span><span class=line><span class=cl>      - <span class=nv>TUNNEL_TOKEN</span><span class=o>=</span><span class=si>${</span><span class=nv>CLOUDFLARE_TUNNEL_TOKEN</span><span class=si>}</span>
+</span></span><span class=line><span class=cl>    depends_on:
+</span></span><span class=line><span class=cl>      - umami
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>volumes:
+</span></span><span class=line><span class=cl>  umami-db-data:
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 실행 및 로그 확인</span>
+</span></span><span class=line><span class=cl>docker compose up -d
+</span></span><span class=line><span class=cl>docker compose logs -f
+</span></span></code></pre></div><p>여기까지 잘 실행되었다면 클라우드플레어 터널 접속은 안되고, 로컬에서는 우마미 접속이 되는 상태입니다.</p><p>env에 터널 토큰값을 비워둔 이유는 우마미 기본 어드민 계정 삭제 후 터널 오픈할거라 비워두었습니다.<br>로컬에서 우마미 접속 후 새 관리자 생성 -> 기본 어드민 삭제 후 터널 토큰값 입력하시면 됩니다.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 터널 토큰값 입력후 도커 재시작</span>
+</span></span><span class=line><span class=cl>nano docker-compose.yml
+</span></span><span class=line><span class=cl>docker compose restart
+</span></span></code></pre></div><p><img src=/homelab/2026-07-07-pi-umami/tunnel_active.webp alt=Tunnel width=325 height=62 loading=lazy decoding=async></p><p>클라우드 플레어 터널까지 활성화 되었으면 모니터링할 사이트 연결 진행하시면 됩니다.</p><hr><h3 id=클라우드플레어-터널을-사용한-이유>클라우드플레어 터널을 사용한 이유</h3><p>이 사이트 도메인도 클라우드플레어 통해서 구매한거고, 공유기 포트포워딩보단 외부 접근을 전체 차단하고 터널로 아웃바운드 통해서 특정 서비스만 오픈해 보려고 해서 터널을 사용해 봤습니다.</p><p>터널 대신 포트포워딩으로 직접 열어주는 방법도 있습니다. 다만 터널(혹은 다른 서비스)이든 포트포워딩이든 둘 중 하나는 설정해야 외부에서 데이터가 수신되어 집계가 됩니다.</p></section><button class=to-top type=button aria-label="Back to top" tabindex=-1>↑</button>
+<script src=/js/to-top.min.627da03c278b034ddcacb563ebdb1733cae793459368dbac77052bb70a5a38cc.js defer></script></main><footer class="layout-container footer" aria-label="Site footer"><div class=footer__line aria-hidden=true></div><div class=footer__item><ul class=unstyled-list><li>Built with <a class=footer__link href=https://gohugo.io target=_blank rel="noopener noreferrer" aria-label="Hugo (opens in new tab)">Hugo</a></li><li>Powered by <a class=footer__link href=https://docs.github.com/ko/pages target=_blank rel="noopener noreferrer" aria-label="GitHub Pages (opens in new tab)">GitHub Pages</a></li></ul></div></footer></body></html>
